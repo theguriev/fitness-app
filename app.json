@@ -9,7 +9,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.fit"
     },
     "android": {
       "adaptiveIcon": {
@@ -23,6 +24,15 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "react-native-health",
+        {
+          "isClinicalDataEnabled": true,
+          "healthSharePermission": "Custom health share permission",
+          "healthUpdatePermission": "Custom health update permission",
+          "healthClinicalDescription": "Custom health share permission for clinical data"
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",
