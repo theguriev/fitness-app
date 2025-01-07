@@ -2,7 +2,7 @@ import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Alert } from 'react-native';
 
-export default function LoginPage() {
+export default function RegistrationPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -20,7 +20,7 @@ export default function LoginPage() {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="Email will be taken as login"
         keyboardType="email-address"
         autoCapitalize="none"
         autoFocus
@@ -34,11 +34,18 @@ export default function LoginPage() {
         value={password}
         onChangeText={setPassword}
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Confirmation"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>Registration</Text>
       </TouchableOpacity>
-      <Text style={styles.footerText}>Don't have an account?</Text>
-      <Link href="/registration">Sign up</Link>
+      <Text style={styles.footerText}>Already have an account?</Text>
+      <Link href="/login">Login</Link>
     </View>
   );
 }
