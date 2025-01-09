@@ -5,17 +5,9 @@ import "../global.css";
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
+    <View className="flex-1 justify-center items-center">
       <Text className="flex p-7 font-bold">Home</Text>
       <Link href="/login">View details</Link>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
