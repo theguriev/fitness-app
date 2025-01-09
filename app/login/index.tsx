@@ -1,7 +1,9 @@
-import { Link } from 'expo-router';
-import React from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, Alert } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
+import { Link } from "expo-router";
+import React from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
+import { useForm, Controller } from "react-hook-form";
+import Input from "@/components/Input";
+import Button from "@/components/Button";
 
 type LoginFormInputs = {
   email: string;
@@ -16,25 +18,24 @@ export default function LoginPage() {
   } = useForm<LoginFormInputs>();
 
   const onSubmit = (data: LoginFormInputs) => {
-    Alert.alert('Success', `Logged in with email: ${data.email}`);
+    Alert.alert("Success", `Logged in with email: ${data.email}`);
   };
 
-
   return (
-    <View style={styles.container}>
+    <View className="flex-1 justify-center items-center bg-slate-50 p-4">
       <Controller
         control={control}
         name="email"
         rules={{
-          required: 'Email is required',
+          required: "Email is required",
           pattern: {
             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: 'Invalid email format',
+            message: "Invalid email format",
           },
         }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={[styles.input, errors.email && styles.errorInput]}
+          <Input
+            error={Boolean(errors.email)}
             placeholder="Email"
             placeholderTextColor="#aaa"
             keyboardType="email-address"
@@ -45,20 +46,24 @@ export default function LoginPage() {
           />
         )}
       />
-      {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
+      {errors.email && (
+        <Text className="text-red-600 text-sm mb-2">
+          {errors.email.message}
+        </Text>
+      )}
       <Controller
         control={control}
         name="password"
         rules={{
-          required: 'Password is required',
+          required: "Password is required",
           minLength: {
             value: 6,
-            message: 'Password must be at least 6 characters long',
+            message: "Password must be at least 6 characters long",
           },
         }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={[styles.input, errors.password && styles.errorInput]}
+          <Input
+            error={Boolean(errors.password)}
             placeholder="Password"
             placeholderTextColor="#aaa"
             secureTextEntry
@@ -68,64 +73,14 @@ export default function LoginPage() {
           />
         )}
       />
-      {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
-
-      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <Text style={styles.footerText}>Don't have an account?</Text>
+      {errors.password && (
+        <Text className="text-red-600 text-sm mb-2">
+          {errors.password.message}
+        </Text>
+      )}
+      <Button onPress={handleSubmit(onSubmit)}>Login</Button>
+      <Text className="text-slate-300 text-sm">Don't have an account?</Text>
       <Link href="/registration">Sign up</Link>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 24,
-  },
-  input: {
-    width: '100%',
-    height: 50,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: '#ddd',
-  },
-  errorInput: {
-    borderColor: '#ff4d4d',
-    textAlign: 'left'
-  },
-  button: {
-    width: '100%',
-    height: 50,
-    backgroundColor: '#18181b',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  errorText: {
-    color: '#ff4d4d',
-    fontSize: 12,
-    marginBottom: 8,
-  },
-  footerText: {
-    marginTop: 20,
-    color: '#555',
-  },
-});
