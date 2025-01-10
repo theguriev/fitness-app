@@ -11,7 +11,7 @@ const Input = ({
     <TextInput
       className={cn(
         className,
-        "w-full h-12 bg-white rounded-md px-4 mb-2 border border-[#000] text-bold",
+        "w-full h-12 bg-white rounded-md px-4 mb-2 border border-gray-300 text-bold",
         error && "border-red-500"
       )}
       {...rest}
