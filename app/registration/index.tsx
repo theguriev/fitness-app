@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import ErrorText from "@/components/ErrorText";
 import Input from "@/components/Input";
 import { Link } from "expo-router";
 import React from "react";
@@ -48,11 +49,7 @@ export default function RegistrationPage() {
           />
         )}
       />
-      {errors.email && (
-        <Text className="text-red-600 text-sm mb-2">
-          {errors.email.message}
-        </Text>
-      )}
+      {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
       <Controller
         control={control}
         name="password"
@@ -75,11 +72,7 @@ export default function RegistrationPage() {
           />
         )}
       />
-      {errors.password && (
-        <Text className="text-red-600 text-sm mb-2">
-          {errors.password.message}
-        </Text>
-      )}
+      {errors.password && <ErrorText>{errors.password.message}</ErrorText>}
       <Controller
         control={control}
         name="confirmation"
@@ -103,9 +96,7 @@ export default function RegistrationPage() {
         )}
       />
       {errors.confirmation && (
-        <Text className="text-red-600 text-sm mb-2">
-          {errors.confirmation.message}
-        </Text>
+        <ErrorText>{errors.confirmation.message}</ErrorText>
       )}
       <Button onPress={handleSubmit(handleLogin)}>Registration</Button>
       <Text className="text-slate-300 text-sm mt-4">
