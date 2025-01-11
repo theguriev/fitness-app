@@ -1,25 +1,29 @@
 import Button from "@/components/Button";
 import ErrorText from "@/components/ErrorText";
 import Input from "@/components/Input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "expo-router";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Text, View, Alert } from "react-native";
-
-type RegistrationFormInputs = {
-  email: string;
-  password: string;
-  confirmation: string;
-};
+import { FormSchema, formSchema } from "./zod";
 
 export default function RegistrationPage() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
-  } = useForm<RegistrationFormInputs>();
+    formState: { errors, isValid },
+  } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+    mode: "onBlur",
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmation: "",
+    },
+  });
 
-  const handleLogin = (data: RegistrationFormInputs) => {
+  const handleLogin = (data: FormSchema) => {
     // Handle authentication logic here
     Alert.alert("Login Successful", `Welcome, ${data.email}!`);
   };
@@ -98,7 +102,9 @@ export default function RegistrationPage() {
       {errors.confirmation && (
         <ErrorText>{errors.confirmation.message}</ErrorText>
       )}
-      <Button onPress={handleSubmit(handleLogin)}>Registration</Button>
+      <Button onPress={handleSubmit(handleLogin)} disabled={!isValid}>
+        Registration
+      </Button>
       <Text className="text-slate-300 text-sm mt-4">
         Already have an account?
       </Text>
