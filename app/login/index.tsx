@@ -1,6 +1,6 @@
 import { Link } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
+import { Text, View, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
@@ -79,7 +79,9 @@ export default function LoginPage() {
         </Text>
       )}
       <Button onPress={handleSubmit(onSubmit)}>Login</Button>
-      <Text className="text-slate-300 text-sm">Don't have an account?</Text>
+      <Text className="text-slate-300 text-sm mt-4">
+        Don't have an account?
+      </Text>
       <Link href="/registration">Sign up</Link>
     </View>
   );
