@@ -4,6 +4,7 @@ import { Text, View, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
+import ErrorText from "@/components/ErrorText";
 
 type LoginFormInputs = {
   email: string;
@@ -46,11 +47,7 @@ export default function LoginPage() {
           />
         )}
       />
-      {errors.email && (
-        <Text className="text-red-600 text-sm mb-2">
-          {errors.email.message}
-        </Text>
-      )}
+      {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
       <Controller
         control={control}
         name="password"
@@ -73,11 +70,7 @@ export default function LoginPage() {
           />
         )}
       />
-      {errors.password && (
-        <Text className="text-red-600 text-sm mb-2">
-          {errors.password.message}
-        </Text>
-      )}
+      {errors.password && <ErrorText>{errors.password.message}</ErrorText>}
       <Button onPress={handleSubmit(onSubmit)}>Login</Button>
       <Text className="text-slate-300 text-sm mt-4">
         Don't have an account?
