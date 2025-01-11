@@ -5,20 +5,25 @@ import { useForm, Controller } from "react-hook-form";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import ErrorText from "@/components/ErrorText";
-
-type LoginFormInputs = {
-  email: string;
-  password: string;
-};
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { FormSchema } from "./zod";
+import { formSchema } from "./zod";
 
 export default function LoginPage() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormInputs>();
+    formState: { errors, isValid },
+  } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+    mode: "onSubmit",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  const onSubmit = (data: LoginFormInputs) => {
+  const onSubmit = (data: FormSchema) => {
     Alert.alert("Success", `Logged in with email: ${data.email}`);
   };
 
@@ -71,7 +76,9 @@ export default function LoginPage() {
         )}
       />
       {errors.password && <ErrorText>{errors.password.message}</ErrorText>}
-      <Button onPress={handleSubmit(onSubmit)}>Login</Button>
+      <Button onPress={handleSubmit(onSubmit)} disabled={!isValid}>
+        Login
+      </Button>
       <Text className="text-slate-300 text-sm mt-4">
         Don't have an account?
       </Text>
