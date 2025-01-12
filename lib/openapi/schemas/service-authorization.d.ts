@@ -201,8 +201,8 @@ export interface paths {
       };
     };
   };
-  "/change-name": {
-    /** Change user name */
+  "/update-meta": {
+    /** Update user meta */
     put: {
       parameters: {
         cookie: {
@@ -216,13 +216,13 @@ export interface paths {
       requestBody: {
         content: {
           "application/json": {
-            /** @description New name for the user */
-            name: string;
+            /** @description New meta information for the user */
+            meta: Record<string, never>;
           };
         };
       };
       responses: {
-        /** @description User name changed successfully */
+        /** @description User meta updated successfully */
         200: {
           content: never;
         };
@@ -247,8 +247,8 @@ export interface components {
     User: {
       /** @description The ID of the user. */
       _id: string;
-      /** @description The name of the user. */
-      name: string;
+      /** @description Additional information about the user. */
+      meta?: Record<string, never>;
       /**
        * Format: email
        * @description The email address of the user.
@@ -273,7 +273,8 @@ export interface components {
       };
     };
     RegisterUserRequest: {
-      name: string;
+      /** @description Additional information about the user. */
+      meta?: Record<string, never>;
       /** Format: email */
       email: string;
       password: string;

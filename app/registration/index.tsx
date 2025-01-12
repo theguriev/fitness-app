@@ -7,8 +7,9 @@ import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Text, View, Alert } from "react-native";
 import { FormSchema, formSchema } from "./zod";
-import isServerErrorResponse from "@/utils/1";
-import registration from "./actions/registration";
+import isServerErrorResponse from "@/utils/isServerErrorResponse";
+import ServerErrorMessage from "@/components/ServerErrorMessage";
+import { api } from "@/lib/openapi/apiClient";
 
 export default function RegistrationPage() {
   const [submitState, setSubmitState] = useState<ServerErrorResponse>();
@@ -30,7 +31,13 @@ export default function RegistrationPage() {
     // Handle authentication logic here
     Alert.alert("Login Successful", `Welcome, ${data.email}!`);
     console.log("log: trying to registration with data", data);
-    const response = await registration(data);
+    const request = await api.authorization("/registration", "post", {
+      body: { ...data },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const response = await request.json();
     if (isServerErrorResponse(response)) {
       setSubmitState(response);
     }

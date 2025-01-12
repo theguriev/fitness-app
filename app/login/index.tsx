@@ -8,9 +8,9 @@ import ErrorText from "@/components/ErrorText";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FormSchema } from "./zod";
 import { formSchema } from "./zod";
-import login from "./actions/login";
 import ServerErrorMessage from "../../components/ServerErrorMessage";
-import isServerErrorResponse from "@/utils/1";
+import isServerErrorResponse from "@/utils/isServerErrorResponse";
+import { api } from "@/lib/openapi/apiClient";
 
 export default function LoginPage() {
   const [submitState, setSubmitState] = useState<ServerErrorResponse>();
@@ -30,7 +30,13 @@ export default function LoginPage() {
   const onSubmit = async (data: FormSchema) => {
     Alert.alert("Success", `Logged in with email: ${data.email}`);
     console.log("log: trying to login with data", data);
-    const response = await login(data);
+    const request = await api.authorization("/login", "post", {
+      body: data,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const response = await request.json();
     if (isServerErrorResponse(response)) {
       setSubmitState(response);
     }

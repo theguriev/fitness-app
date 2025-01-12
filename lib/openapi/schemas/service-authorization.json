@@ -23,9 +23,9 @@
             "type": "string",
             "description": "The ID of the user."
           },
-          "name": {
-            "type": "string",
-            "description": "The name of the user."
+          "meta": {
+            "type": "object",
+            "description": "Additional information about the user."
           },
           "email": {
             "type": "string",
@@ -59,7 +59,6 @@
         },
         "required": [
           "_id",
-          "name",
           "email",
           "password",
           "timestamp"
@@ -68,10 +67,9 @@
       "RegisterUserRequest": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 20
+          "meta": {
+            "type": "object",
+            "description": "Additional information about the user."
           },
           "email": {
             "type": "string",
@@ -89,7 +87,6 @@
           }
         },
         "required": [
-          "name",
           "email",
           "password",
           "confirmation"
@@ -499,9 +496,9 @@
         }
       }
     },
-    "/change-name": {
+    "/update-meta": {
       "put": {
-        "summary": "Change user name",
+        "summary": "Update user meta",
         "parameters": [
           {
             "name": "accessToken",
@@ -521,13 +518,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "New name for the user"
+                  "meta": {
+                    "type": "object",
+                    "description": "New meta information for the user"
                   }
                 },
                 "required": [
-                  "name"
+                  "meta"
                 ]
               }
             }
@@ -535,7 +532,7 @@
         },
         "responses": {
           "200": {
-            "description": "User name changed successfully"
+            "description": "User meta updated successfully"
           },
           "404": {
             "description": "Access token not found",
