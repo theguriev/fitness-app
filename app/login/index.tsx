@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import Input from "@/components/Input";
@@ -8,8 +8,12 @@ import ErrorText from "@/components/ErrorText";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FormSchema } from "./zod";
 import { formSchema } from "./zod";
+import login from "./actions/login";
+import ServerErrorMessage from "../../components/ServerErrorMessage";
+import isServerErrorResponse from "@/utils/1";
 
 export default function LoginPage() {
+  const [submitState, setSubmitState] = useState<ServerErrorResponse>();
   const {
     control,
     handleSubmit,
@@ -23,8 +27,13 @@ export default function LoginPage() {
     },
   });
 
-  const onSubmit = (data: FormSchema) => {
+  const onSubmit = async (data: FormSchema) => {
     Alert.alert("Success", `Logged in with email: ${data.email}`);
+    console.log("log: trying to login with data", data);
+    const response = await login(data);
+    if (isServerErrorResponse(response)) {
+      setSubmitState(response);
+    }
   };
 
   return (
@@ -32,13 +41,6 @@ export default function LoginPage() {
       <Controller
         control={control}
         name="email"
-        rules={{
-          required: "Email is required",
-          pattern: {
-            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: "Invalid email format",
-          },
-        }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
             error={Boolean(errors.email)}
@@ -56,13 +58,6 @@ export default function LoginPage() {
       <Controller
         control={control}
         name="password"
-        rules={{
-          required: "Password is required",
-          minLength: {
-            value: 6,
-            message: "Password must be at least 6 characters long",
-          },
-        }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
             error={Boolean(errors.password)}
@@ -76,6 +71,7 @@ export default function LoginPage() {
         )}
       />
       {errors.password && <ErrorText>{errors.password.message}</ErrorText>}
+      <ServerErrorMessage response={submitState} />
       <Button onPress={handleSubmit(onSubmit)} disabled={!isValid}>
         Login
       </Button>

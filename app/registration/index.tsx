@@ -3,12 +3,15 @@ import ErrorText from "@/components/ErrorText";
 import Input from "@/components/Input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Text, View, Alert } from "react-native";
 import { FormSchema, formSchema } from "./zod";
+import isServerErrorResponse from "@/utils/1";
+import registration from "./actions/registration";
 
 export default function RegistrationPage() {
+  const [submitState, setSubmitState] = useState<ServerErrorResponse>();
   const {
     control,
     handleSubmit,
@@ -23,9 +26,14 @@ export default function RegistrationPage() {
     },
   });
 
-  const handleLogin = (data: FormSchema) => {
+  const handleRegistration = async (data: FormSchema) => {
     // Handle authentication logic here
     Alert.alert("Login Successful", `Welcome, ${data.email}!`);
+    console.log("log: trying to registration with data", data);
+    const response = await registration(data);
+    if (isServerErrorResponse(response)) {
+      setSubmitState(response);
+    }
   };
 
   return (
@@ -102,7 +110,8 @@ export default function RegistrationPage() {
       {errors.confirmation && (
         <ErrorText>{errors.confirmation.message}</ErrorText>
       )}
-      <Button onPress={handleSubmit(handleLogin)} disabled={!isValid}>
+      <ServerErrorMessage response={submitState} />
+      <Button onPress={handleSubmit(handleRegistration)} disabled={!isValid}>
         Registration
       </Button>
       <Text className="text-slate-300 text-sm mt-4">
