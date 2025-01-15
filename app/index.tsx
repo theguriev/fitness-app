@@ -1,4 +1,3 @@
-import { Link } from "expo-router";
 import { View, Text } from "react-native";
 
 import "../global.css";
@@ -6,8 +5,7 @@ import "../global.css";
 export default function HomeScreen() {
   return (
     <View className="flex-1 justify-center items-center">
-      <Text className="flex p-7 font-bold">Home</Text>
-      <Link href="/login">View details</Link>
+      <Text className="flex p-7 font-bold">Hello world!</Text>
     </View>
   );
 }

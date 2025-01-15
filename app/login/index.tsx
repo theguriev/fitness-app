@@ -32,6 +32,7 @@ export default function LoginPage() {
     console.log("log: trying to login with data", data);
     const request = await api.authorization("/login", "post", {
       body: data,
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
